@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" type="text/css" href="estilo.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocatix - Test y Guia Universitaria</title>
+    
+    <style>
+        /* ============================================== */
+        /* ESTILOS DEL MENÚ (COMPACTO) */
+        /* ============================================== */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #34495e; 
+            min-width: 180px; 
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1000;
+            padding: 0; 
+            border-top: 2px solid #2ecc71;
+            left: 0; 
+        }
+        .dropdown-content a {
+            color: white !important;
+            padding: 8px 12px; 
+            text-decoration: none;
+            display: block;
+            white-space: nowrap;
+            font-size: 14px; 
+        }
+        .dropdown-content a:hover {
+            background-color: #1e3040;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-header {
+             padding: 8px 12px;
+             font-weight: bold;
+             color: #2ecc71;
+             background-color: #1e3040;
+             cursor: default;
+             font-size: 14px;
+        }
+
+        /* ============================================== */
+        /* LÓGICA DE FILTRADO SÓLO CON CSS (:target) - NO AFECTA TAMAÑO DE TARJETA */
+        /* ============================================== */
+
+        /* 1. Ocultamos todos los contenedores de filtros (categorías específicas) por defecto */
+        .filter-container {
+            display: none;
+            padding-top: 20px;
+        }
+
+        /* 2. Cuando el ID de la URL coincide con un filtro, MOSTRAMOS ese contenedor */
+        .filter-container:target {
+            display: block;
+        }
+        
+        /* 3. Ocultamos el contenedor principal (#carreras-grid) SÓLO si un filtro está activo. */
+        .content-wrapper:has(.filter-container:target) #carreras-grid {
+             display: none;
+        }
+        
+        /* Estilo para el contenedor de las cuadrículas de tarjetas (si estos deben ser consistentes) */
+        .cards-grid, .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+        
+        /* ============================================== */
+        /* ESTILOS DEL PIE DE PÁGINA Y FORMULARIO DE CONTACTO */
+        /* ============================================== */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .contact-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .contact-container h3 {
+            color: #2ecc71;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            text-align: center;
+        }
+        
+        .contact-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .contact-form input[type="text"],
+        .contact-form input[type="email"],
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #5d6d7e;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #34495e;
+            color: white;
+        }
+        
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .contact-form button {
+            background-color: #2ecc71;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .contact-form button:hover {
+            background-color: #27ae60;
+        }
+        
+        .contact-info {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #5d6d7e;
+            text-align: center;
+        }
+        .contact-info p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            color: #bdc3c7;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="main-nav" style="position: fixed; top: 0; width: 100%; background-color: #2c3e50; padding: 10px 0; z-index: 1000; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; gap: 40px;">
+            <li><a href="#hero-section" style="text-decoration: none; color: white; font-weight: bold;">Inicio</a></li>
+
+<li><a href="file:///D:/IMPORTANTE/CAWEB/Proyecto%20Final/HTML%20y%20CSS/Test%20Vocacional.html" style="text-decoration: none; color: white; font-weight: bold;">Test Vocacional</a></li>
+            <li><a href="#pie-pagina" style="text-decoration: none; color: white; font-weight: bold;">Contacto</a></li>
+        </ul>
+    </nav>
+    <div style="height: 50px;"></div> 
+
+    <div class="hero" id="hero-section">
+        <div class="logotipo">
+            <img src="Logo.png" width="100" alt="Logotipo">
+        </div>
+        <h1>Carreras Profesionales</h1>
+        <h2>Vocatix</h2>
+        <div class="hero-divider"></div>
+        <p>Análisis exhaustivo de las <b>profesiones con mayor demanda e impacto</b> en el territorio nacional y las instituciones de educación superior que las imparten.</p>
+        <div class="hero-divider"></div>
+        <div class="hero-year">Año 2025</div>
+    </div>
+    <div class="content-wrapper">
+        <div class="container">
+            <section class="section" **id="carreras-grid"**>
+                <div class="section-header">
+                    <h2 class="section-title">Carreras con Mayor Demanda</h2>
+                    <p class="section-description">Conoce y Compara las profesiones con los salarios más competitivos en el mercado laboral mexicano</p>               
+                <div class="cards-grid">
+                    <div class="card" id="petrolera">
+                        <div class="card-header"><div class="card-header-content"><div class="ranking-badge">🏗</div><div style="flex: 1;"><h3 class="card-title">Ingeniería Petrolera</h3><span class="badge badge-area">Ingeniería</span></div></div></div>
+                        <div class="card-body">
+                            <p class="card-description">Se enfoca en la extracción, transporte, procesamiento y gestión de hidrocarburos como petróleo y gas natural...</p>
+                            <div class="salary-box"><div class="salary-label">Salario Promedio Mensual</div><div class="salary-amount">Entre $22,500 pesos</div></div>
+                            <div class="info-box"><div class="info-label">Escuelas</div><div class="info-value"><a href="https://www.ipn.mx/oferta-educativa/educacion-superior/ver-carrera.html?lg=es&id=19&nombre=Ingenier%C3%ADa-Petrolera">IPN</a>, <a href="https://oferta.unam.mx/ingenieria-petrolera.html">UNAM</a>, <a href="https://uvm.mx/oferta-academica/licenciaturas-ingenierias/ingenierias-uvm/ingenieria-en-petroleo-y-gas">UVM</a></div></div>
+                            <div class="info-grid"><div class="info-box"><div class="info-label">Duración</div><div class="info-value">9 y 10 sem.</div></div><div class="info-box"><div class="info-label">Demanda</div><span class="badge badge-competitiveness-alta">Alta</span></div></div>
+                            <div class="growth-section"><span class="salary-label">Potencial de Crecimiento</span><span class="badge badge-growth-medio-alto">Medio-Alto</span></div>
+                        </div>
+                    </div>
+
+                    <div class="card" id="actuaria">
+                        <div class="card-header"><div class="card-header-content"><div class="ranking-badge">⚖️</div><div style="flex: 1;"><h3 class="card-title">Actuaría</h3><span class="badge badge-area">Ciencias Exactas</span></div></div></div>
+                        <div class="card-body">
+                            <p class="card-description">Se enfoca en aplicar matemáticas, estadísticas y modelos financieros para evaluar y gestionar riesgos futuros...</p>
+                            <div class="salary-box"><div class="salary-label">Salario Promedio Mensual</div><div class="salary-amount">Entre $28,000 pesos</div></div>
+                            <div class="info-box"><div class="info-label">Escuelas</div><div class="info-value"><a href="https://uvm.mx/oferta-academica/licenciaturas-ingenierias/negocios/actuaria">UVM</a>, <a href="https://www.unitec.mx/licenciatura-en-actuaria/">UNITEC</a>, <a href="https://oferta.unam.mx/actuaria.html">UNAM</a></div></div>
+                            <div class="info-grid"><div class="info-box"><div class="info-label">Duración</div><div class="info-value">8 sem.</div></div><div class="info-box"><div class="info-label">Demanda</div><span class="badge badge-competitiveness-alta">Alta</span></div></div>
+                            <div class="growth-section"><span class="salary-label">Potencial de Crecimiento</span><span class="badge badge-growth-alto">Alto</span></div>
+                        </div>
+                    </div>
+
+                    <div class="card" id="finanzas">
+                        <div class="card-header"><div class="card-header-content"><div class="ranking-badge">📈</div><div style="flex: 1;"><h3 class="card-title">Finanzas</h3><span class="badge badge-area">Negocios y Administración</span></div></div></div>
+                        <div class="card-body">
+                            <p class="card-description">Se centra en la gestión de recursos económicos para individuos, empresas y gobiernos...</p>
+                            <div class="salary-box"><div class="salary-label">Salario Promedio Mensual</div><div class="salary-amount">Entre $16,000</div></div>
+                            <div class="info-box"><div class="info-label">Escuelas</div><div class="info-value"><a href="https://www.unitec.mx/licenciatura-en-finanzas/">UNITEC</a>, <a href="https://uvm.mx/oferta-academica/licenciaturas-ingenierias/negocios/licenciatura-en-finanzas-y-banca">UVM</a>, <a href="https://oferta.unam.mx/fcya.html">UNAM</a></div></div>
+                            <div class="info-grid"><div class="info-box"><div class="info-label">Duración</div><div class="info-value">8 sem.</div></div><div class="info-box"><div class="info-label">Demanda</div><span class="badge badge-competitiveness-alta">Alta</span></div></div>
+                            <div class="growth-section"><span class="salary-label">Potencial de Crecimiento</span><span class="badge badge-growth-alto">Alto</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card" id="medicina">
+                        <div class="card-header"><div class="card-header-content"><div class="ranking-badge">🏥</div><div style="flex: 1;"><h3 class="card-title">Medicina</h3><span class="badge badge-area">Ciencias de la Salud</span></div></div></div>
+                        <div class="card-body">
+                            <p class="card-description">Trata sobre la formación de profesionales para prevenir, diagnosticar y tratar enfermedades...</p>
+                            <div class="salary-box"><div class="salary-label">Salario Promedio Mensual</div><div class="salary-amount">Entre $26,500</div></div>
+                            <div class="info-box"><div class="info-label">Escuelas</div><div class="info-value"><a href="https://www.esm.ipn.mx/">IPN</a>, <a href="https://lasalle.mx/oferta-educativa/facultades/facultad-mexicana-de-medicina/licenciatura-en-medico-cirujano/">La Salle</a>, <a href="https://mkt.up.edu.mx/licenciatura-en-medicina">Panamericana</a></div></div>
+                            <div class="info-grid"><div class="info-box"><div class="info-label">Duración</div><div class="info-value">12 sem.</div></div><div class="info-box"><div class="info-label">Demanda</div><span class="badge badge-competitiveness-muy-alta">Muy Alta</span></div></div>
+                            <div class="growth-section"><span class="salary-label">Potencial de Crecimiento</span><span class="badge badge-growth-alto">Alto</span></div>
+                        </div>
+                    </div>
+
+                    <div class="card" id="derecho">
+                        <div class="card-header"><div class="card-header-content"><div class="ranking-badge">🏛️</div><div style="flex: 1;"><h3 class="card-title">Derecho</h3><span class="badge badge-area">Ciencias Sociales</span></div></div></div>
+                        <div class="card-body">
+                            <p class="card-description">Se centra en el estudio, interpretación y aplicación de las leyes para resolver conflictos...</p>
+                            <div class="salary-box"><div class="salary-label">Salario Promedio Mensual</div><div class="salary-amount">Entre $16,000</div></div>
+                            <div class="info-box"><div class="info-label">Escuelas</div><div class="info-value"><a href="https://www.derecho.unam.mx/">UNAM</a>, <a href="https://lasalle.mx/oferta-educativa/facultades/facultad-de-derecho/licenciatura-en-derecho/">La Salle</a>, <a href="https://uvm.mx/oferta-academica/licenciaturas-ingenierias/ciencias-sociales/licenciatura-en-derecho">UVM</a></div></div>
+                            <div class="info-grid"><div class="info-box"><div class="info-label">Duración</div><div class="info-value">10 sem.</div></div><div class="info-box"><div class="info-label">Demanda</div><span class="badge badge-competitiveness-muy-alta">Muy Alta</span></div></div>
+                            <div class="growth-section"><span class="salary-label">Potencial de Crecimiento</span><span class="badge badge-growth-medio-alto">Medio-Alto</span></div>
+                        </div>
+                    </div>
+
+                    <div class="card" id="sistemas-computacionales">
+                        <div class="card-header"><div class="card-header-content"><div class="ranking-badge">👨‍💻</div><div style="flex: 1;"><h3 class="card-title">Ingeniería en Sistemas Computacionales</h3><span class="badge badge-area">Tecnología</span></div></div></div>
+                        <div class="card-body">
+                            <p class="card-description">Diseño, desarrollo e implementación de sistemas informáticos y soluciones tecnológicas...</p>
+                            <div class="salary-box"><div class="salary-label">Salario Promedio Mensual</div><div class="salary-amount">$32,000</div></div>
+                            <div class="info-box"><div class="info-label">Escuelas</div><div class="info-value"><a href="https://www.ipn.mx/oferta-educativa/educacion-superior/ver-carrera.html?lg=es&id=24#:~:text=Objetivo,sentido%20%C3%A9tico%20y%20de%20responsabilidad.">IPN</a>, <a href="https://uvm.mx/oferta-academica/licenciaturas-ingenierias/ingenierias-uvm/ingenieria-en-sistemas-computacionales">UVM</a>, <a href="https://oferta.unam.mx/ingenieria-en-computacion.html">UNAM</a></div></div>
+                            <div class="info-grid"><div class="info-box"><div class="info-label">Duración</div><div class="info-value">9 sem.</div></div><div class="info-box"><div class="info-label">Demanda</div><span class="badge badge-competitiveness-alta">Alta</span></div></div>
+                            <div class="growth-section"><span class="salary-label">Potencial de Crecimiento</span><span class="badge badge-growth-alto">Alto</span></div>
+                        </div>
+                    </div>
+
+                    <div class="card" id="industrial">
+                        <div class="card-header"><div class="card-header-content"><div class="ranking-badge">🛠️</div><div style="flex: 1;"><h3 class="card-title">Ingeniería Industrial</h3><span class="badge badge-area">Ingeniería</span></div></div></div>
+                        <div class="card-body">
+                            <p class="card-description">Optimización de procesos productivos y sistemas complejos de manufactura...</p>
+                            <div class="salary-box"><div class="salary-label">Salario Promedio Mensual</div><div class="salary-amount">$31,000</div></div>
+                            <div class="info-box"><div class="info-label">Escuelas</div><div class="info-value"><a href="https://www.ingenieria.unam.mx/programas_academicos/licenciatura/industrial.php">UNAM</a>, <a href="https://www.ipn.mx/oferta-educativa/educaci%C3%B3n-superior/ver-carrera.html?lg=es&id=13&nombre=Ingenier%C3%ADa-Industrial#:~:text=Objetivo,con%20un%20entorno%20global%20din%C3%A1mico.">IPN</a>, <a href="https://uvm.mx/oferta-academica/licenciaturas-ingenierias/ingenierias-uvm/ingenieria-industrial-y-de-sistemas">UVM</a></div></div>
+                            <div class="info-grid"><div class="info-box"><div class="info-label">Duración</div><div class="info-value">9 sem.</div></div><div class="info-box"><div class="info-label">Demanda</div><span class="badge badge-competitiveness-media">Media</span></div></div>
+                            <div class="growth-section"><span class="salary-label">Potencial de Crecimiento</span><span class="badge badge-growth-medio-alto">Medio-Alto</span></div>
+                        </div>
+                    </div>
+
+                    <div class="card" id="civil">
+                        <div class="card-header"><div class="card-header-content"><div class="ranking-badge">👷🏻‍♂️</div><div style="flex: 1;"><h3 class="card-title">Ingeniería Civil</h3><span class="badge badge-area">Ingeniería</span></div></div></div>
+                        <div class="card-body">
+                            <p class="card-description">Diseño, construcción y mantenimiento de obras de infraestructura pública y privada...</p>
+                            <div class="salary-box"><div class="salary-label">Salario Promedio Mensual</div><div class="salary-amount">$30,000</div></div>
+                            <div class="info-box"><div class="info-label">Escuelas</div><div class="info-value"><a href="https://www.ipn.mx/oferta-educativa/educaci%C3%B3n-superior/ver-carrera.html?lg=es&id=8&nombre=Ingenier%C3%ADa-Civil">IPN</a>, <a href="https://oferta.unam.mx/ingenieria-civil.html">UNAM</a>, <a href="https://lasalle.mx/oferta-educativa/facultades/facultad-de-ingenieria/licenciatura-en-ingenieria-civil/">La Salle</a></div></div>
+                            <div class="info-grid"><div class="info-box"><div class="info-label">Duración</div><div class="info-value">9 sem.</div></div><div class="info-box"><div class="info-label">Demanda</div><span class="badge badge-competitiveness-alta">Alta</span></div></div>
+                            <div class="growth-section"><span class="salary-label">Potencial de Crecimiento</span><span class="badge badge-growth-medio-alto">Medio-Alto</span></div>
+                        </div>
+                    </div>
+
+                    <div class="card" id="automotriz">
+                        <div class="card-header"><div class="card-header-content"><div class="ranking-badge">🧑‍🔧</div><div style="flex: 1;"><h3 class="card-title">Ingeniería Automotriz</h3><span class="badge badge-area">Ingeniería</span></div></div></div>
+                        <div class="card-body">
+                            <p class="card-description">Diseño, fabricación y mantenimiento de sistemas automotrices, desde vehículos...</p>
+                            <div class="salary-box"><div class="salary-label">Salario Promedio Mensual</div><div class="salary-amount">$29,000</div></div>
+                            <div class="info-box"><div class="info-label">Escuelas</div><div class="info-value"><a href="https://www.ipn.mx/oferta-educativa/educaci%C3%B3n-superior/ver-carrera.html?lg=es&id=23&nombre=Ingenier%C3%ADa-en-Sistemas-Automotrices">IPN</a>, <a href="https://uvm.mx/oferta-academica/licenciaturas-ingenierias/ingenierias-uvm/ingenieria-mecatronica-con-enfoque-automotriz">UVM</a>, <a href="https://cbi.azc.uam.mx/?page_id=33">UAM</a></div></div>
+                            <div class="info-grid"><div class="info-box"><div class="info-label">Duración</div><div class="info-value">9 sem.</div></div><div class="info-box"><div class="info-label">Demanda</div><span class="badge badge-competitiveness-media">Media</span></div></div>
+                            <div class="growth-section"><span class="salary-label">Potencial de Crecimiento</span><span class="badge badge-growth-medio-alto">Medio-Alto</span></div>
+                        </div>
+                    </div>
+
+                    <div class="card" id="administracion">
+                        <div class="card-header"><div class="card-header-content"><div class="ranking-badge">🏢</div><div style="flex: 1;"><h3 class="card-title">Administración de Empresas</h3><span class="badge badge-area">Negocios y Administración</span></div></div></div>
+                        <div class="card-body">
+                            <p class="card-description">Gestión y dirección de organizaciones para alcanzar objetivos empresariales...</p>
+                            <div class="salary-box"><div class="salary-label">Salario Promedio Mensual</div><div class="salary-amount">$28,000</div></div>
+                            <div class="info-box"><div class="info-label">Escuelas</div><div class="info-value"><a href="https://oferta.unam.mx/administracion.html">UNAM</a>, <a href="https://uvm.mx/oferta-academica/licenciaturas-ingenierias/negocios/licenciatura-en-administracion-de-empresas">UVM</a>, <a href="https://www.ipn.mx/oferta-educativa/educacion-superior/ver-carrera.html?lg=es&id=53">IPN</a></div></div>
+                            <div class="info-grid"><div class="info-box"><div class="info-label">Duración</div><div class="info-value">8 sem.</div></div><div class="info-box"><div class="info-label">Demanda</div><span class="badge badge-competitiveness-media">Media</span></div></div>
+                            <div class="growth-section"><span class="salary-label">Potencial de Crecimiento</span><span class="badge badge-growth-medio-alto">Medio-Alto</span></div>
+                        </div>
+                    </div>
+
+                    <div class="card" id="veterinaria">
+                        <div class="card-header"><div class="card-header-content"><div class="ranking-badge">🦴</div><div style="flex: 1;"><h3 class="card-title">Medicina Veterinaria</h3><span class="badge badge-area">Ciencias de la Salud</span></div></div></div>
+                        <div class="card-body">
+                            <p class="card-description">Prevención, diagnóstico y tratamiento de enfermedades en animales...</p>
+                            <div class="salary-box"><div class="salary-label">Salario Promedio Mensual</div><div class="salary-amount">$27,000</div></div>
+                            <div class="info-box"><div class="info-label">Escuelas</div><div class="info-value"><a href="https://uvm.mx/oferta-academica/licenciaturas-ingenierias/ciencias-salud/licenciatura-en-medicina-veterinaria-y-zootecnia">UVM</a>, <a href="https://oferta.unam.mx/medicina-veterinaria.html">UNAM</a>, <a href="https://www.anahuac.mx/licenciatura-en-medicina-veterinaria-y-zootecnia">Anáhuac</a></div></div>
+                            <div class="info-grid"><div class="info-box"><div class="info-label">Duración</div><div class="info-value">10 sem.</div></div><div class="info-box"><div class="info-label">Demanda</div><span class="badge badge-competitiveness-alta">Alta</span></div></div>
+                            <div class="growth-section"><span class="salary-label">Potencial de Crecimiento</span><span class="badge badge-growth-medio-alto">Medio-Alto</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <div class="filter-container" **id="ingenierias"**>
+                <div class="section-header">
+                    <h2 class="section-title">🛠️ Carreras de Ingeniería</h2>
+                    <p class="section-description">Diseño, construcción y optimización de sistemas.</p>
+                </div>
+                <div class="category-grid">
+                    <div class="card" id="petrolera-copy"> ... Contenido de Ingeniería Petrolera ... </div>
+                    <div class="card" id="sistemas-copy"> ... Contenido de Ing. Sistemas Computacionales ... </div>
+                    <div class="card" id="industrial-copy"> ... Contenido de Ingeniería Industrial ... </div>
+                    <div class="card" id="civil-copy"> ... Contenido de Ingeniería Civil ... </div>
+                    <div class="card" id="automotriz-copy"> ... Contenido de Ingeniería Automotriz ... </div>
+                </div>
+                <a href="#carreras-grid">⬅️ Volver a todas las carreras</a>
+            </div>
+
+            <div class="filter-container" **id="salud"**>
+                <div class="section-header">
+                    <h2 class="section-title">⚕️ Carreras de Ciencias de la Salud</h2>
+                    <p class="section-description">Prevención, diagnóstico y tratamiento.</p>
+                </div>
+                <div class="category-grid">
+                    <div class="card" id="medicina-copy"> ... Contenido de Medicina ... </div>
+                    <div class="card" id="veterinaria-copy"> ... Contenido de Medicina Veterinaria ... </div>
+                </div>
+                <a href="#carreras-grid">⬅️ Volver a todas las carreras</a>
+            </div>
+
+            <div class="filter-container" **id="negocios"**>
+                <div class="section-header">
+                    <h2 class="section-title">📈 Carreras de Negocios y Administración</h2>
+                    <p class="section-description">Gestión de recursos económicos y dirección empresarial.</p>
+                </div>
+                <div class="category-grid">
+                    <div class="card" id="finanzas-copy"> ... Contenido de Finanzas ... </div>
+                    <div class="card" id="administracion-copy"> ... Contenido de Administración de Empresas ... </div>
+                </div>
+                <a href="#carreras-grid">⬅️ Volver a todas las carreras</a>
+            </div>
+
+            <div class="filter-container" **id="otros"**>
+                <div class="section-header">
+                    <h2 class="section-title">⚖️ Otras Áreas (Exactas y Sociales)</h2>
+                    <p class="section-description">Análisis de riesgos y aplicación de leyes.</p>
+                </div>
+                <div class="category-grid">
+                    <div class="card" id="actuaria-copy"> ... Contenido de Actuaría ... </div>
+                    <div class="card" id="derecho-copy"> ... Contenido de Derecho ... </div>
+                </div>
+                <a href="#carreras-grid">⬅️ Volver a todas las carreras</a>
+            </div>
+
+        </div>
+    </div> <footer id="pie-pagina">
+        <div class="contact-container">
+            
+            <h3>Aclaraciones y Dudas</h3>
+            
+            <div class="contact-info">
+                <p>Contacto Directo: 55 7361 8456<br>
+                                     santishgo@gmail.com 
+            </div>
+
+<h3>Quejas o Sugerencias</h3>
+            
+            <div class="contact-info">
+                <p>Contacto Directo: 56 4324 4292<br>
+                                     paredescastilloguillermo@gmail.com 
+            </div>
+
+            <div class="contact-info">
+                <p>&copy; 2025 Planteamiento Central y Codigo Fuente: Sanchez Hernandez Santiago <br><br> 
+                          Colaboradores: Chavez Solis Sebastian, Lira Cardenas Ocelot Gibrael, Poceros Herrera Rodrigo Alonso y Paredes Castillo Guillermo</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+

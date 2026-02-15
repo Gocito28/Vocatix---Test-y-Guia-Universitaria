@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Orientación Vocacional</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom, #f5f5f5, #e8e8e8);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border: 1px solid #d4d4d4;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Pantalla de inicio */
+        .inicio {
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .icono-principal {
+            width: 80px;
+            height: 80px;
+            background: #1a1a1a;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 300;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .separador {
+            width: 60px;
+            height: 1px;
+            background: #666;
+            margin: 20px auto;
+        }
+
+        .descripcion {
+            color: #666;
+            line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .instrucciones {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: left;
+        }
+
+        .instrucciones h2 {
+            font-size: 12px;
+            font-weight: 600;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+        }
+
+        .instrucciones ul {
+            list-style: none;
+        }
+
+        .instrucciones li {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .numero {
+            width: 24px;
+            height: 24px;
+            background: #e0e0e0;
+            color: #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .btn-principal {
+            width: 100%;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-principal:hover {
+            background: #2a2a2a;
+        }
+
+        /* Pantalla de test */
+        .test-header {
+            border-bottom: 1px solid #e0e0e0;
+            padding: 30px;
+        }
+
+        .test-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .progreso-barra {
+            width: 100%;
+            height: 4px;
+            background: #e0e0e0;
+            overflow: hidden;
+        }
+
+        .progreso-fill {
+            height: 100%;
+            background: #1a1a1a;
+            transition: width 0.3s ease;
+        }
+
+        .test-contenido {
+            padding: 50px 40px;
+        }
+
+        .pregunta {
+            font-size: 24px;
+            font-weight: 300;
+            color: #1a1a1a;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .opciones {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .opcion {
+            width: 100%;
+            padding: 20px;
+            border: 1px solid #d4d4d4;
+            background: white;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .opcion:hover {
+            border-color: #888;
+            background: #fafafa;
+        }
+
+        .opcion.seleccionada {
+            border-color: #1a1a1a;
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .letra {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #d4d4d4;
+            background: #f5f5f5;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        .opcion.seleccionada .letra {
+            border-color: #555;
+            background: #2a2a2a;
+            color: white;
+        }
+
+        .test-footer {
+            border-top: 1px solid #e0e0e0;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-secundario {
+            padding: 12px 30px;
+            border: 1px solid #d4d4d4;
+            background: white;
+            color: #333;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secundario:hover:not(:disabled) {
+            background: #f5f5f5;
+            border-color: #888;
+        }
+
+        .btn-secundario:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .btn-siguiente {
+            padding: 12px 30px;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-siguiente:hover:not(:disabled) {
+            background: #2a2a2a;
+        }
+
+        .btn-siguiente:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Pantalla de resultados */
+        .resultados {
+            padding: 60px 40px;
+        }
+
+        .resultado-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .resultado-item {
+            border: 1px solid #d4d4d4;
+            padding: 30px;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .resultado-item.destacado {
+            border-color: #1a1a1a;
+            background: #fafafa;
+        }
+
+        .resultado-numero {
+            width: 50px;
+            height: 50px;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        .resultado-item.destacado .resultado-numero {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .resultado-info {
+            flex: 1;
+        }
+
+        .resultado-titulo {
+            font-size: 18px;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .resultado-desc {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .afinidad {
+            margin-bottom: 20px;
+        }
+
+        .afinidad-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .afinidad-barra {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            overflow: hidden;
+        }
+
+        .afinidad-fill {
+            height: 100%;
+            background: #1a1a1a;
+            transition: width 1s ease;
+        }
+
+        .carreras-titulo {
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .carreras-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .carrera-tag {
+            padding: 6px 15px;
+            background: #f5f5f5;
+            border: 1px solid #d4d4d4;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .recomendacion {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            padding: 25px;
+            margin: 40px 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        .recomendacion-texto {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .recomendacion h3 {
+            font-size: 15px;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .oculto {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                border: none;
+            }
+
+            .inicio, .test-contenido, .resultados {
+                padding: 40px 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .pregunta {
+                font-size: 20px;
+            }
+
+            .resultado-item {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Pantalla de Inicio -->
+        <div id="pantallaInicio" class="inicio">
+            <div class="icono-principal">🎓</div>
+            <h1>Test de Orientación Vocacional</h1>
+            <div class="separador"></div>
+            <p class="descripcion">
+                Este instrumento de evaluación profesional le ayudará a identificar 
+                sus aptitudes, intereses y áreas de desarrollo profesional más afines 
+                a su perfil personal.
+            </p>
+
+            <div class="instrucciones">
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>
+                        <span class="numero">1</span>
+                        <span>Responda cada pregunta de manera honesta y reflexiva.</span>
+                    </li>
+                    <li>
+                        <span class="numero">2</span>
+                        <span>Seleccione la opción que mejor describa sus preferencias.</span>
+                    </li>
+                    <li>
+                        <span class="numero">3</span>
+                        <span>El cuestionario consta de 10 preguntas.</span>
+                    </li>
+                    <li>
+                        <span class="numero">4</span>
+                        <span>Al finalizar, recibirá un análisis detallado de su perfil.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <button class="btn-principal" onclick="iniciarTest()">
+                Iniciar Evaluación →
+            </button>
+        </div>
+
+        <!-- Pantalla del Test -->
+        <div id="pantallaTest" class="oculto">
+            <div class="test-header">
+                <div class="test-info">
+                    <span>Test Vocacional</span>
+                    <span id="numeroPregunta">Pregunta 1 de 10</span>
+                </div>
+                <div class="progreso-barra">
+                    <div id="progresoFill" class="progreso-fill" style="width: 10%"></div>
+                </div>
+            </div>
+
+            <div class="test-contenido">
+                <h2 id="textoPregunta" class="pregunta"></h2>
+                <div id="opcionesContainer" class="opciones"></div>
+            </div>
+
+            <div class="test-footer">
+                <button id="btnAnterior" class="btn-secundario" onclick="preguntaAnterior()">
+                    ← Anterior
+                </button>
+                <button id="btnSiguiente" class="btn-siguiente" onclick="siguientePregunta()" disabled>
+                    Siguiente →
+                </button>
+            </div>
+        </div>
+
+        <!-- Pantalla de Resultados -->
+        <div id="pantallaResultados" class="oculto resultados">
+            <div class="resultado-header">
+                <div class="icono-principal">🏆</div>
+                <h1>Resultados del Análisis</h1>
+                <p class="descripcion">
+                    Basado en sus respuestas, hemos identificado las siguientes áreas profesionales
+                </p>
+            </div>
+
+            <div id="resultadosContainer"></div>
+
+            <div class="recomendacion">
+                <div>💼</div>
+                <div>
+                    <h3>Recomendación Profesional</h3>
+                    <p class="recomendacion-texto">
+                        Este análisis es una guía orientativa. Le sugerimos complementar estos resultados 
+                        con una consulta profesional y considerar otros factores como sus circunstancias 
+                        personales, oportunidades del mercado laboral y metas a largo plazo.
+                    </p>
+                </div>
+            </div>
+
+            <button class="btn-principal" onclick="reiniciarTest()">
+                ↻ Realizar Nueva Evaluación
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Datos del test
+        const preguntas = [
+            {
+                texto: "¿Cómo prefieres resolver un problema complejo?",
+                opciones: [
+                    { texto: "Analizando datos y buscando patrones lógicos", areas: ["ciencias", "tecnologia"] },
+                    { texto: "Dialogando y buscando consensos con otros", areas: ["humanidades", "social"] },
+                    { texto: "Creando soluciones innovadoras y originales", areas: ["arte", "diseño"] },
+                    { texto: "Siguiendo procedimientos establecidos y probados", areas: ["administracion", "salud"] }
+                ]
+            },
+            {
+                texto: "¿Qué tipo de actividad te resulta más gratificante?",
+                opciones: [
+                    { texto: "Investigar y descubrir nuevos conocimientos", areas: ["ciencias", "humanidades"] },
+                    { texto: "Ayudar directamente a otras personas", areas: ["salud", "social"] },
+                    { texto: "Construir o crear cosas tangibles", areas: ["tecnologia", "diseño"] },
+                    { texto: "Organizar y gestionar recursos eficientemente", areas: ["administracion", "tecnologia"] }
+                ]
+            },
+            {
+                texto: "¿En qué entorno laboral te sentirías más cómodo?",
+                opciones: [
+                    { texto: "Un laboratorio o centro de investigación", areas: ["ciencias", "salud"] },
+                    { texto: "Una oficina corporativa o empresa", areas: ["administracion", "tecnologia"] },
+                    { texto: "Un estudio creativo o espacio artístico", areas: ["arte", "diseño"] },
+                    { texto: "Una institución educativa o social", areas: ["humanidades", "social"] }
+                ]
+            },
+            {
+                texto: "¿Qué habilidad consideras tu mayor fortaleza?",
+                opciones: [
+                    { texto: "Pensamiento analítico y matemático", areas: ["ciencias", "tecnologia"] },
+                    { texto: "Comunicación y expresión verbal", areas: ["humanidades", "social"] },
+                    { texto: "Creatividad e imaginación", areas: ["arte", "diseño"] },
+                    { texto: "Empatía y sensibilidad hacia otros", areas: ["salud", "social"] }
+                ]
+            },
+            {
+                texto: "¿Qué tipo de proyectos te motivan más?",
+                opciones: [
+                    { texto: "Proyectos de largo plazo con impacto científico", areas: ["ciencias", "salud"] },
+                    { texto: "Proyectos que generen cambio social", areas: ["social", "humanidades"] },
+                    { texto: "Proyectos con resultados visuales o tangibles", areas: ["arte", "diseño"] },
+                    { texto: "Proyectos que optimicen procesos y recursos", areas: ["administracion", "tecnologia"] }
+                ]
+            },
+            {
+                texto: "¿Cómo prefieres trabajar?",
+                opciones: [
+                    { texto: "De forma independiente y autónoma", areas: ["arte", "ciencias"] },
+                    { texto: "En equipo colaborando constantemente", areas: ["social", "administracion"] },
+                    { texto: "Liderando y dirigiendo a otros", areas: ["administracion", "humanidades"] },
+                    { texto: "Alternando entre trabajo individual y grupal", areas: ["tecnologia", "salud"] }
+                ]
+            },
+            {
+                texto: "¿Qué te genera mayor satisfacción profesional?",
+                opciones: [
+                    { texto: "El reconocimiento intelectual y académico", areas: ["ciencias", "humanidades"] },
+                    { texto: "El impacto positivo en la vida de otros", areas: ["salud", "social"] },
+                    { texto: "El éxito económico y empresarial", areas: ["administracion", "tecnologia"] },
+                    { texto: "La expresión personal y artística", areas: ["arte", "diseño"] }
+                ]
+            },
+            {
+                texto: "¿Qué tipo de lectura prefieres?",
+                opciones: [
+                    { texto: "Artículos científicos y técnicos", areas: ["ciencias", "tecnologia"] },
+                    { texto: "Literatura, filosofía o historia", areas: ["humanidades", "arte"] },
+                    { texto: "Noticias de actualidad y temas sociales", areas: ["social", "administracion"] },
+                    { texto: "Revistas de diseño, arquitectura o moda", areas: ["diseño", "arte"] }
+                ]
+            },
+            {
+                texto: "¿Cómo manejas situaciones de presión?",
+                opciones: [
+                    { texto: "Con calma, analizando opciones metódicamente", areas: ["ciencias", "salud"] },
+                    { texto: "Buscando apoyo y consejo de otros", areas: ["social", "humanidades"] },
+                    { texto: "Tomando decisiones rápidas y ejecutivas", areas: ["administracion", "tecnologia"] },
+                    { texto: "Canalizando la energía creativamente", areas: ["arte", "diseño"] }
+                ]
+            },
+            {
+                texto: "¿Cuál es tu visión de éxito profesional?",
+                opciones: [
+                    { texto: "Ser reconocido como experto en mi campo", areas: ["ciencias", "tecnologia"] },
+                    { texto: "Contribuir al bienestar de la comunidad", areas: ["social", "salud"] },
+                    { texto: "Alcanzar posiciones de liderazgo", areas: ["administracion", "humanidades"] },
+                    { texto: "Crear obras o proyectos memorables", areas: ["arte", "diseño"] }
+                ]
+            }
+        ];
+
+        const areasProfesionales = {
+            ciencias: {
+                nombre: "Ciencias Exactas y Naturales",
+                carreras: ["Física", "Química", "Matemáticas", "Biología", "Astronomía"],
+                descripcion: "Aptitud para el análisis científico, investigación y descubrimiento de nuevos conocimientos.",
+                icono: "🔬"
+            },
+            tecnologia: {
+                nombre: "Tecnología e Ingeniería",
+                carreras: ["Ingeniería de Software", "Ingeniería Civil", "Ingeniería Industrial", "Ciencias de la Computación"],
+                descripcion: "Habilidad para resolver problemas técnicos y crear soluciones innovadoras.",
+                icono: "💻"
+            },
+            salud: {
+                nombre: "Ciencias de la Salud",
+                carreras: ["Medicina", "Enfermería", "Psicología", "Odontología", "Nutrición"],
+                descripcion: "Vocación de servicio y cuidado del bienestar físico y mental de las personas.",
+                icono: "⚕️"
+            },
+            humanidades: {
+                nombre: "Humanidades y Ciencias Sociales",
+                carreras: ["Derecho", "Filosofía", "Historia", "Ciencias Políticas", "Sociología"],
+                descripcion: "Interés por comprender la sociedad, la cultura y el comportamiento humano.",
+                icono: "📚"
+            },
+            administracion: {
+                nombre: "Administración y Negocios",
+                carreras: ["Administración de Empresas", "Contaduría", "Economía", "Marketing", "Finanzas"],
+                descripcion: "Capacidad para gestionar recursos, liderar equipos y tomar decisiones estratégicas.",
+                icono: "📊"
+            },
+            arte: {
+                nombre: "Artes y Comunicación",
+                carreras: ["Bellas Artes", "Música", "Teatro", "Comunicación", "Periodismo"],
+                descripcion: "Creatividad y sensibilidad para expresar ideas a través de medios artísticos.",
+                icono: "🎨"
+            },
+            diseño: {
+                nombre: "Diseño y Arquitectura",
+                carreras: ["Arquitectura", "Diseño Gráfico", "Diseño Industrial", "Diseño de Interiores", "Diseño de Modas"],
+                descripcion: "Habilidad para crear espacios, objetos y experiencias visuales funcionales y estéticas.",
+                icono: "✏️"
+            },
+            social: {
+                nombre: "Trabajo Social y Educación",
+                carreras: ["Trabajo Social", "Pedagogía", "Educación Especial", "Psicopedagogía", "Orientación Vocacional"],
+                descripcion: "Compromiso con el desarrollo humano y la transformación social positiva.",
+                icono: "🤝"
+            }
+        };
+
+        // Variables de estado
+        let preguntaActual = 0;
+        let respuestas = [];
+        let seleccionActual = null;
+
+        // Funciones
+        function iniciarTest() {
+            document.getElementById('pantallaInicio').classList.add('oculto');
+            document.getElementById('pantallaTest').classList.remove('oculto');
+            mostrarPregunta();
+        }
+
+        function mostrarPregunta() {
+            const pregunta = preguntas[preguntaActual];
+            document.getElementById('textoPregunta').textContent = pregunta.texto;
+            document.getElementById('numeroPregunta').textContent = `Pregunta ${preguntaActual + 1} de ${preguntas.length}`;
+            
+            const progreso = ((preguntaActual + 1) / preguntas.length) * 100;
+            document.getElementById('progresoFill').style.width = progreso + '%';
+
+            const container = document.getElementById('opcionesContainer');
+            container.innerHTML = '';
+
+            pregunta.opciones.forEach((opcion, index) => {
+                const letra = String.fromCharCode(65 + index);
+                const div = document.createElement('div');
+                div.className = 'opcion';
+                div.innerHTML = `
+                    <span class="letra">${letra}</span>
+                    <span>${opcion.texto}</span>
+                `;
+                div.onclick = () => seleccionarOpcion(div, opcion);
+                container.appendChild(div);
+            });
+
+            document.getElementById('btnAnterior').disabled = preguntaActual === 0;
+            document.getElementById('btnSiguiente').disabled = true;
+            seleccionActual = null;
+        }
+
+        function seleccionarOpcion(elemento, opcion) {
+            document.querySelectorAll('.opcion').forEach(op => op.classList.remove('seleccionada'));
+            elemento.classList.add('seleccionada');
+            seleccionActual = opcion;
+            document.getElementById('btnSiguiente').disabled = false;
+        }
+
+        function siguientePregunta() {
+            if (!seleccionActual) return;
+
+            respuestas.push(seleccionActual);
+
+            if (preguntaActual < preguntas.length - 1) {
+                preguntaActual++;
+                mostrarPregunta();
+            } else {
+                mostrarResultados();
+            }
+        }
+
+        function preguntaAnterior() {
+            if (preguntaActual > 0) {
+                preguntaActual--;
+                respuestas.pop();
+                mostrarPregunta();
+            }
+        }
+
+        function mostrarResultados() {
+            document.getElementById('pantallaTest').classList.add('oculto');
+            document.getElementById('pantallaResultados').classList.remove('oculto');
+
+            const puntuaciones = {};
+            Object.keys(areasProfesionales).forEach(area => {
+                puntuaciones[area] = 0;
+            });
+
+            respuestas.forEach(respuesta => {
+                respuesta.areas.forEach(area => {
+                    puntuaciones[area]++;
+                });
+            });
+
+            const resultados = Object.entries(puntuaciones)
+                .sort(([,a], [,b]) => b - a)
+                .slice(0, 3)
+                .map(([area, puntos]) => ({
+                    ...areasProfesionales[area],
+                    area,
+                    puntos,
+                    porcentaje: Math.round((puntos / (preguntas.length * 2)) * 100)
+                }));
+
+            const container = document.getElementById('resultadosContainer');
+            container.innerHTML = '';
+
+            resultados.forEach((resultado, index) => {
+                const div = document.createElement('div');
+                div.className = `resultado-item ${index === 0 ? 'destacado' : ''}`;
+                div.innerHTML = `
+                    <div class="resultado-numero">${index + 1}</div>
+                    <div class="resultado-info">
+                        <div class="resultado-titulo">
+                            <span>${resultado.icono}</span>
+                            <span>${resultado.nombre}</span>
+                        </div>
+                        <p class="resultado-desc">${resultado.descripcion}</p>
+                        <div class="afinidad">
+                            <div class="afinidad-header">
+                                <span>Afinidad</span>
+                                <span>${resultado.porcentaje}%</span>
+                            </div>
+                            <div class="afinidad-barra">
+                                <div class="afinidad-fill" style="width: ${resultado.porcentaje}%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="carreras-titulo">Carreras Recomendadas</p>
+                            <div class="carreras-tags">
+                                ${resultado.carreras.map(c => `<span class="carrera-tag">${c}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function reiniciarTest() {
+            preguntaActual = 0;
+            respuestas = [];
+            seleccionActual = null;
+            document.getElementById('pantallaResultados').classList.add('oculto');
+            document.getElementById('pantallaInicio').classList.remove('oculto');
+        }
+    </script>
+</body>
+</html>
